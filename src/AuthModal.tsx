@@ -57,7 +57,11 @@ export default function AuthModal({ user, onClose, onAuthenticated, onSignOut }:
           setMessage('Impossible de créer ce compte. Vérifiez les informations ou connectez-vous.');
         } else if (data.session && data.user) {
           const profile = await supabase.from('profiles').select('full_name,role').eq('id', data.user.id).single();
-          if (profile.error || profile.data.role !== 'passenger') throw new Error('Profil du compte indisponible.');
+          if (profile.error || profile.data.role !== 'passenger') {
+            const { error: signOutError } = await supabase.auth.signOut();
+            if (signOutError) throw signOutError;
+            throw new Error('Profil BLASTI absent. Appliquez les migrations Supabase 001 à 005 dans l’ordre, puis reconnectez-vous.');
+          }
           onAuthenticated({ id: data.user.id, name: profile.data.full_name, role: profile.data.role });
           onClose();
         } else {

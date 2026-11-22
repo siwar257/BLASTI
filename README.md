@@ -8,7 +8,7 @@ The applications require Supabase for account creation, sign-in, persistent rese
 
 1. Create a Supabase project and configure email/password authentication. Keep email confirmation enabled for production and set the project password policy/rate limits in Supabase Auth.
 2. Copy `.env.example` to `.env.local` at the repository root and set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` to the project URL and publishable/anon key.
-3. Apply every SQL migration in `supabase/migrations/` in filename order, including `202611220004_auth_booking_hardening.sql`.
+3. Apply every SQL migration in `supabase/migrations/` in filename order: `202611220001_blasti.sql` through `202611220005_repair_auth_profiles.sql`. Migration 002 installs the Auth-user trigger that creates the corresponding `public.profiles` row; migration 005 repairs profiles for accounts created before that trigger was installed.
 4. For mobile, copy `mobile/.env.example` to `mobile/.env` and set `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_ANON_KEY` to the same project values.
 5. Start the web app with `npm install` and `npm run dev`. Start mobile from `mobile/` with `npm install` and `npm start`.
 
