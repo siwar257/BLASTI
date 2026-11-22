@@ -116,12 +116,35 @@ export default function AuthModal({ user, onClose, onAuthenticated, onSignOut }:
     }
   };
 
+  const enterDemo = async (demoRole: 'passenger' | 'operator') => {
+    setBusy(true);
+    setMessage('');
+    try {
+      if (supabase) {
+        const { error } = await supabase.auth.signOut();
+        if (error) throw error;
+      }
+      onAuthenticated({
+        id: `demo-${demoRole}`,
+        name: demoRole === 'operator' ? 'Chauffeur Démo' : 'Passager Démo',
+        role: demoRole,
+        demo: true,
+      });
+      onClose();
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Impossible d’ouvrir le mode démo.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
   return <div className="modal-backdrop" onClick={onClose}>
     <section className="modal auth-modal" onClick={event => event.stopPropagation()}>
       <button className="modal-close" onClick={onClose} aria-label="Fermer"><X size={18}/></button>
       {user ? <>
-        <h2>Bonjour {user.name}.</h2>
-        <p className="modal-subtitle">Votre compte BLASTI est connecté.</p>
+        <h2>{user.demo ? 'Mode démonstration' : `Bonjour ${user.name}.`}</h2>
+        <p className="modal-subtitle">{user.demo ? 'Session temporaire, sans création de compte.' : 'Votre compte BLASTI est connecté.'}</p>
+        {user.demo && <p className="demo-notice">Compte temporaire en lecture seule. Aucune réservation ni donnée réelle ne sera modifiée.</p>}
         {message && <p className="auth-message" role="alert">{message}</p>}
         <button className="button modal-confirm" disabled={busy} onClick={() => void signOut()}>
           Se déconnecter <ArrowRight size={16}/>
@@ -150,8 +173,13 @@ export default function AuthModal({ user, onClose, onAuthenticated, onSignOut }:
             {busy ? 'Patientez…' : mode === 'signup' ? 'Créer mon compte' : 'Me connecter'} <ArrowRight size={16}/>
           </button>
         </form>
+        {mode === 'login' && <div className="demo-access">
+          <span>Accès immédiat sans inscription</span>
+          <button type="button" disabled={busy} onClick={() => void enterDemo('passenger')}>Ouvrir la démo passager</button>
+          <button type="button" disabled={busy} onClick={() => void enterDemo('operator')}>Ouvrir la démo chauffeur</button>
+        </div>}
         <button className="auth-toggle" onClick={() => { setMessage(''); setMode(mode === 'signup' ? 'login' : 'signup'); }}>
-          {mode === 'signup' ? 'Déjà inscrit ? Se connecter' : 'Nouveau ? Créer un compte'}
+          {mode === 'signup' ? 'Déjà inscrit ? Se connecter' : 'Créer un vrai compte passager'}
         </button>
       </>}
     </section>

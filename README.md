@@ -4,7 +4,7 @@ BLASTI is a responsive passenger reservation app for a simulated Sousse pilot. I
 
 ## Secure setup
 
-The applications require Supabase for account creation, sign-in, persistent reservations, operator accounts, and driver alerts. Without Supabase credentials the web app is a read-only local preview; the mobile app shows the account form but will not create fake accounts or accept fake logins.
+The applications require Supabase for real account creation, sign-in, persistent reservations, operator accounts, and driver alerts. Both apps also offer temporary passenger and chauffeur demo access without email verification. Demo access is clearly marked, uses illustrative data, and is read-only; it does not create an Auth account or write to Supabase.
 
 1. Create a Supabase project and configure email/password authentication. Keep email confirmation enabled for production and set the project password policy/rate limits in Supabase Auth.
 2. Copy `.env.example` to `.env.local` at the repository root and set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` to the project URL and publishable/anon key.
@@ -18,7 +18,9 @@ Passenger sign-up creates a passenger account. Chauffeur accounts are not self-p
 
 The database validates profile names, seat selections, route inputs, departure times, and fares. Fares are constrained to `0–2.50 DT` both in the user interface and PostgreSQL. Reservation writes, cancellation, and waitlist entry use authenticated database functions. Booking rows remain in Supabase after logout and are available again to the same account. Each confirmed reservation creates a persisted notification for the assigned chauffeur; it is delivered in-app in real time while online and remains in the database if the chauffeur is offline.
 
-## Local preview and caveats
+## Demo access and caveats
+
+Choose **Ouvrir la démo passager** or **Ouvrir la démo chauffeur** on the sign-in screen for immediate preview access. These sessions are temporary and do not persist as real accounts. Real reservations and operator actions require a verified Supabase account.
 
 Bab Bhar destinations, schedule examples, coordinates, and fares are illustrative. They are not verified transport services. Local preview data is stored in browser/mobile storage, but it does not provide authentication or cross-device bookings. For actual use, configure Supabase and provision verified operators and vehicles. Notifications are in-app/database notifications, not SMS or operating-system push notifications.
 

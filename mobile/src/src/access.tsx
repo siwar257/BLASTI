@@ -7,7 +7,7 @@ import { colors } from './theme';
 import { useStore } from './store';
 
 export default function AccessScreen() {
-  const { signIn, signUp, connection } = useStore();
+  const { signIn, signUp, enterDemo, connection } = useStore();
   const [role, setRole] = useState<'passenger' | 'operator'>('passenger');
   const [register, setRegister] = useState(false);
   const [name, setName] = useState('');
@@ -75,10 +75,19 @@ export default function AccessScreen() {
           {role === 'passenger' && <Pressable onPress={() => setRegister(value => !value)}>
             <Text style={s.register}>{register ? '3andek compte? Dkhol' : 'Ma 3andekch compte? A3mel compte'}</Text>
           </Pressable>}
+          <View style={s.demoAccess}>
+            <Text style={s.demoLabel}>Accès immédiat · mode simulation uniquement</Text>
+            <Pressable style={s.demoButton} onPress={() => void enterDemo('passenger').catch(error => Alert.alert('Mode démo indisponible', error instanceof Error ? error.message : 'Réessayez.'))}>
+              <Text style={s.demoButtonText}>Ouvrir la démo passager</Text>
+            </Pressable>
+            <Pressable style={s.demoButton} onPress={() => void enterDemo('operator').catch(error => Alert.alert('Mode démo indisponible', error instanceof Error ? error.message : 'Réessayez.'))}>
+              <Text style={s.demoButtonText}>Ouvrir la démo chauffeur</Text>
+            </Pressable>
+          </View>
           <Text style={s.connection}>
             {connection === 'demo'
               ? 'Configurez Supabase pour créer un compte ou vous connecter en toute sécurité.'
-              : 'Vos réservations restent liées à votre compte après déconnexion.'}
+              : 'Les comptes réels conservent leurs réservations après déconnexion.'}
           </Text>
         </View>
         <Text style={s.bottom}>BLASTI · {connection === 'live' ? 'CONNECTED LIVE' : 'COMPTE SÉCURISÉ'}</Text>
@@ -109,6 +118,10 @@ const s = StyleSheet.create({
   submit: { height: 44, backgroundColor: colors.navy, borderRadius: 9, alignItems: 'center', justifyContent: 'center', marginTop: 11 },
   submitText: { fontSize: 11, color: '#fff', fontWeight: '800' },
   register: { fontSize: 9, color: colors.navyLight, textAlign: 'center', fontWeight: '700', marginTop: 11 },
+  demoAccess: { borderTopWidth: 1, borderColor: '#e9edf1', marginTop: 15, paddingTop: 12, gap: 7 },
+  demoLabel: { fontSize: 9, color: colors.muted, textAlign: 'center', marginBottom: 2 },
+  demoButton: { height: 38, borderRadius: 8, backgroundColor: '#eff4f8', alignItems: 'center', justifyContent: 'center' },
+  demoButtonText: { fontSize: 10, fontWeight: '800', color: '#31516e' },
   connection: { fontSize: 9, color: colors.muted, textAlign: 'center', marginTop: 12, lineHeight: 14 },
   bottom: { textAlign: 'center', fontSize: 8, fontWeight: '800', letterSpacing: 1, color: '#98a3af', marginTop: 17 },
 });

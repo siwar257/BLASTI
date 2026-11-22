@@ -14,8 +14,8 @@ export default function ProfileScreen() {
       <View style={s.top}><Logo/><Text style={s.topTitle}>Compte mte3i</Text></View>
       <Card style={s.profileCard}>
         <View style={s.avatar}><Text style={s.avatarText}>{user.name[0]}</Text></View>
-        <View style={{ flex: 1 }}><Text style={s.name}>{user.name}</Text><Text style={s.role}>{user.role === 'operator' ? 'Chauffeur · Bab Bhar' : 'Mousfer BLASTI'}</Text></View>
-        <ShieldCheck color={connection === 'live' ? colors.green : '#ad8000'} size={19}/>
+        <View style={{ flex: 1 }}><Text style={s.name}>{user.name}</Text><Text style={s.role}>{user.demo ? 'Compte démo · lecture seule' : user.role === 'operator' ? 'Chauffeur · Bab Bhar' : 'Mousfer BLASTI'}</Text></View>
+        <ShieldCheck color={!user.demo && connection === 'live' ? colors.green : '#ad8000'} size={19}/>
       </Card>
       <Eyebrow>LES REGLAGES</Eyebrow>
       <Card style={s.menuCard}>
