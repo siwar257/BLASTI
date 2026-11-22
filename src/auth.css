@@ -1,0 +1,26 @@
+.auth-message {
+  color: #a33d37;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 10px 0 0;
+}
+
+.auth-toggle {
+  display: block;
+  border: 0;
+  background: transparent;
+  color: var(--navy);
+  font-size: 12px;
+  font-weight: 700;
+  margin: 14px auto 0;
+  padding: 6px;
+}
+
+.auth-modal form .input-label {
+  margin-top: 12px;
+}
+
+.auth-modal form .modal-confirm {
+  width: 100%;
+  margin-top: 16px;
+}

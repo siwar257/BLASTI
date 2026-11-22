@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "BLASTI",
+    "slug": "blasti",
+    "description": "7jez blastek fel louage w ta3ref el dispo live fi Sousse.",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-status-bar",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "BLASTI testa3mel el camera bech tscan billets QR."
+        }
+      ]
+    ],
+    "scheme": "blasti",
+    "experiments": {
+      "typedRoutes": true
+    },
+    "android": {
+      "package": "tn.blasti.app"
+    },
+    "ios": {
+      "bundleIdentifier": "tn.blasti.app",
+      "supportsTablet": true
+    }
+  }
+}
